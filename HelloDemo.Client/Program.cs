@@ -13,7 +13,8 @@ namespace HelloDemo.Client
         {
             Console.WriteLine("Reading client config");
             var endpointConfigString = GetEndpoint();
-            var endpoint = new IPEndPoint(IPAddress.Parse(endpointConfigString.Split(':')[0]), int.Parse(endpointConfigString.Split(':')[1]));
+            var address = endpointConfigString.Split(':')[0];
+            var port = int.Parse(endpointConfigString.Split(':')[1]);
 
             var cts = new CancellationTokenSource();
 
@@ -31,7 +32,7 @@ namespace HelloDemo.Client
                     try
                     {
                         var client = new TcpClient();
-                        await client.ConnectAsync(endpoint.Address, endpoint.Port).ConfigureAwait(false);
+                        await client.ConnectAsync(address, port).ConfigureAwait(false);
                         await HandleConnectionAsync(client, cts.Token).ConfigureAwait(false);
                         Console.WriteLine("Connection disconnected");
                     }
